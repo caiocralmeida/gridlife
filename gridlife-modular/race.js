@@ -133,7 +133,7 @@ function missCard(){const L=s.ms||[];return L.length?`<div class="card"><h3>Miss
 AC.push(['Rivalidade vencida','Vença Elias 5 vezes',()=>RV()[0]>=5],['Colecionador','Tenha 10 troféus de corrida',()=>(s.tr||[]).length>=10],['Patrocinado','Tenha 3 patrocinadores ao mesmo tempo',()=>(s.sp||[]).length>=3],['Bicampeão','Conquiste 2 títulos',()=>(s.ct||[]).length>=2],['Veterano','Chegue aos 35 anos',()=>s.age>=35],['Lojista','Compre 5 itens únicos',()=>Object.keys(s.own||{}).length>=5]);
 const slotX=n=>{try{return JSON.parse(localStorage.getItem('gridlife'+n))}catch(e){return null}};
 function slotsHtml(){return[1,2,3].map(n=>{const x=slotX(n);return`<div class="card" style="text-align:left;margin-top:8px"><div class="row"><span><b>Slot ${n}</b><br><span class="sm">${x?x.name+' · '+(TNM[x.disc||'c'][x.t]||'')+' · Ano '+x.yr:'Vazio'}</span></span>${x?`<span><button class="b" onclick="cont(${n})">Continuar</button> <button class="b s" onclick="delSlot(${n})">Excluir</button></span>`:''}</div></div>`}).join('')}
-function cont(n){s=mig(slotX(n));s.slot=n;draw()}
+function cont(n){s=mig(slotX(n));s.slot=n;V=HOME();draw()}
 function delSlot(n){dlg('Excluir o slot '+n+'? Isso não pode ser desfeito.',{c:1},()=>{try{localStorage.removeItem('gridlife'+n)}catch(e){}draw()})}
 let OPT={sp:1,big:0,hc:0,snd:0};try{Object.assign(OPT,JSON.parse(localStorage.getItem('gridlife_opt')))}catch(e){}
 function optApply(){document.body.classList.toggle('big',!!OPT.big);document.body.classList.toggle('hc',!!OPT.hc);try{localStorage.setItem('gridlife_opt',JSON.stringify(OPT))}catch(e){}}
@@ -222,6 +222,7 @@ function sh(){const r=RC;if(!r||!$('lb'))return;const o=r.cars.slice().sort((a,b
  
  wg('ti',m.tire,0);wg('dm',m.dmg,1);if($('fu'))wg('fu',m.fuel,0)}
 function fin(){clearInterval(RC.iv);const r=RC,t=tier();r.cars.forEach(c=>{if(t.pit==2&&!r.rally&&!c.pits&&!c.dnf)c.tot+=25});
+ if(isG()){finG(r,t);return}
  const o=r.cars.slice().sort((a,b)=>(a.dnf?1:0)-(b.dnf?1:0)||a.tot-b.tot);o.forEach((c,i)=>{if(!c.dnf)c.d.pts+=PT[i]||0});
  const m=r.me,p=o.indexOf(m)+1,mt=s.W[s.pi],tm=Math.random();let pr=!m.dnf&&p<=3?t.sal*[.8,.5,.3][p-1]:0,gain=r.dsq?0:t.sal*([1.5,1,.6][mt.lvl||0])*(s.sx||1)+pr-t.sal*.13;
  const base=m.dnf?-1:[0,5,3,2,1,1,1][p]||0,rep=(r.dsq?0:1)*K[s.t]*(base+(!m.dnf&&p<=s.goal?2:0))*(1+(p==1?.1*(s.up.med||0):0));
