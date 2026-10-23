@@ -1,0 +1,894 @@
+# GRIDLIFE — GAME DESIGN DOCUMENT (GDD)
+## Modos Carreira Gestor e Gestor Livre
+**Versão:** 1.0 — Especificação de planejamento  
+**Status:** Planejamento; implementação não iniciada  
+**Referência de design:** Motorsport Manager, adaptado aos sistemas e à identidade do GridLife.
+
+---
+
+# 1. VISÃO GERAL
+
+## 1.1. Conceito
+
+Expandir o GridLife com dois modos de jogo centrados na administração de equipes de automobilismo:
+
+- **Modo Carreira Gestor:** carreira estruturada, com progressão profissional, objetivos, contratos, reputação e consequências.
+- **Modo Gestor Livre:** experiência configurável, com liberdade para escolher condições iniciais, equipe, orçamento, categoria e dificuldade.
+
+O jogador assume a administração de uma equipe e gerencia pilotos, engenheiros, mecânicos, instalações, desenvolvimento do carro, estoque de peças, patrocinadores, finanças e estratégias de corrida.
+
+O objetivo é construir uma equipe competitiva e sustentável ao longo de múltiplas temporadas.
+
+## 1.2. Princípio fundamental de design
+
+**Simulação complexa internamente, interface simples externamente.**
+
+O jogo calcula habilidades, qualidade de fabricação, probabilidades de falha, produtividade, custos e desempenho. O jogador toma decisões por meio de informações compreensíveis, como:
+
+- Instalação: nível 2/6.
+- Projeto: 8 dias restantes.
+- Qualidade prevista: média.
+- Custo: $ 18.000.
+- Estoque: 3 motores.
+- Patrocinador: 2 corridas restantes.
+- Finanças: saldo atual e previsão de despesas.
+
+Os valores apresentados são exemplos ilustrativos, não parâmetros definitivos.
+
+O jogador não deve precisar conhecer fórmulas técnicas para administrar sua equipe.
+
+## 1.3. Pilares do jogo
+
+1. Gestão acessível, com decisões relevantes.
+2. Progressão gradual e sustentável.
+3. Funcionários com habilidades, salários e personalidades.
+4. Desenvolvimento de carros por pesquisa, projeto e fabricação.
+5. Economia integrada ao desempenho esportivo.
+6. Corridas influenciadas pela qualidade da gestão.
+7. Equipes rivais que evoluem de forma independente.
+8. Liberdade para construir estratégias diferentes.
+9. Preservação da carreira de piloto já existente.
+
+---
+
+# 2. MODOS DE JOGO
+
+## 2.1. Modo Carreira Gestor
+
+Experiência estruturada de longo prazo.
+
+O jogador inicia sua trajetória profissional e assume uma equipe de acordo com as condições iniciais definidas para a carreira.
+
+Características:
+
+- Perfil individual de gestor.
+- Escolha de nome e estilo de gestão.
+- Estatísticas pessoais que evoluem conforme as ações.
+- Objetivos da equipe e expectativas da diretoria, quando aplicável.
+- Orçamento limitado.
+- Contratos, salários e negociações.
+- Mercado de pilotos, engenheiros e mecânicos.
+- Instalações com limites por categoria.
+- Projetos de desenvolvimento e fabricação.
+- Contratos de patrocínio.
+- Campeonato com calendário definido.
+- Promoção entre categorias, conforme as regras da carreira.
+- Reputação, conquistas e histórico profissional.
+- Possibilidade de crise financeira, demissão ou recuperação, de acordo com as regras do modo.
+
+O desempenho é avaliado ao longo do tempo, não apenas por uma corrida isolada.
+
+## 2.2. Modo Gestor Livre
+
+Modo sandbox para experimentar diferentes formas de administrar equipes.
+
+Configurações previstas:
+
+- Categoria inicial.
+- Equipe existente ou projeto próprio.
+- Orçamento inicial.
+- Nível inicial das instalações.
+- Dificuldade econômica.
+- Velocidade de desenvolvimento.
+- Duração dos intervalos entre corridas.
+- Participação manual ou automática nas corridas.
+- Consequências financeiras e profissionais.
+- Intensidade da progressão das equipes rivais.
+
+O jogador pode criar desafios próprios, como começar com pouco dinheiro, administrar uma equipe de elite ou desenvolver uma equipe amadora até o topo.
+
+As configurações disponíveis deverão ser limitadas às opções que o jogo conseguir suportar de maneira consistente.
+
+## 2.3. Independência entre modos
+
+A carreira de piloto existente será preservada.
+
+Cada modo terá:
+
+- Perfil e progressão próprios.
+- Dados de carreira separados.
+- Regras de progressão apropriadas.
+- Salvamentos independentes.
+- Histórico específico.
+
+Sistemas compatíveis, como calendário, simulação de corrida e informações do carro, poderão ser compartilhados internamente para evitar duplicação de código.
+
+---
+
+# 3. CRIAÇÃO DO GESTOR
+
+## 3.1. Identidade
+
+Na criação da carreira, o jogador poderá definir:
+
+- Nome e sobrenome.
+- Aparência ou avatar, conforme os recursos disponíveis.
+- Estilo de gestão.
+- Condições iniciais de carreira.
+
+O painel de carreira seguirá a linguagem visual do painel de piloto, mas será adaptado à administração de uma equipe.
+
+## 3.2. Estilos de gestão
+
+O estilo concede uma vantagem inicial pequena e especializada. Não deve impedir que o jogador desenvolva outros atributos.
+
+### Engenheiro
+- Pequena vantagem em desenvolvimento técnico.
+- Maior afinidade com projetos de engenharia e confiabilidade.
+- Especialização inicial em Engenharia.
+
+### Empresário
+- Pequena vantagem em negociações e contratos.
+- Maior afinidade com patrocínios e planejamento financeiro.
+- Especialização inicial em Negociação.
+
+### Líder de equipe
+- Pequena vantagem na motivação e integração dos funcionários.
+- Maior afinidade com organização e gestão de pessoas.
+- Especialização inicial em Liderança.
+
+### Estrategista
+- Pequena vantagem na preparação e análise de corridas.
+- Maior afinidade com decisões de pneus, paradas e condições de prova.
+- Especialização inicial em Estratégia.
+
+### Competidor
+- Pequena vantagem na preparação competitiva.
+- Maior afinidade com avaliação esportiva e decisões orientadas a resultados.
+- Especialização inicial em Preparação competitiva.
+
+Os bônus exatos serão definidos durante o balanceamento. Uma faixa inicial de 3% a 5% pode ser testada, desde que não torne um estilo obrigatório.
+
+## 3.3. Estatísticas pessoais
+
+Atributos previstos:
+
+- Engenharia.
+- Negociação.
+- Liderança.
+- Estratégia.
+- Gestão financeira.
+- Avaliação de talentos.
+- Preparação competitiva.
+- Reputação.
+
+As estatísticas evoluem por ações relevantes, experiência e resultados. Também podem diminuir em situações justificadas.
+
+Exemplos:
+
+- Projetos técnicos bem conduzidos desenvolvem Engenharia.
+- Negociações eficientes desenvolvem Negociação.
+- Gestão consistente de funcionários desenvolve Liderança.
+- Decisões estratégicas corretas desenvolvem Estratégia.
+- Controle sustentável de despesas desenvolve Gestão financeira.
+- Contratações promissoras desenvolvem Avaliação de talentos.
+- Resultados consistentes influenciam Preparação competitiva e Reputação.
+
+O sistema deve evitar evolução artificial por repetição de ações sem consequência.
+
+Reputação, experiência e atributos são conceitos diferentes: reputação é a percepção do mercado, experiência representa a trajetória e atributos representam as capacidades do gestor.
+
+---
+
+# 4. EQUIPE E ORGANIZAÇÃO
+
+## 4.1. Estrutura da equipe
+
+A equipe será composta por:
+
+- Pilotos titulares.
+- Pilotos reservas, quando aplicável.
+- Engenheiros.
+- Mecânicos.
+- Responsáveis por departamentos.
+- Instalações e equipamentos.
+- Carros e peças disponíveis.
+- Patrocinadores e contratos comerciais.
+
+O tamanho da equipe e as funções disponíveis dependerão da categoria e das regras do campeonato.
+
+## 4.2. Departamentos
+
+Departamentos planejados:
+
+- Engenharia.
+- Aerodinâmica.
+- Mecânica e manutenção.
+- Estratégia de corrida.
+- Operações e logística.
+- Comercial e patrocínios.
+- Financeiro.
+
+A estrutura não precisa ser apresentada como uma simulação empresarial complexa. Na interface, o jogador deve entender quais áreas estão funcionando bem, quais estão sobrecarregadas e onde é necessário investir.
+
+## 4.3. Funcionários
+
+Cada funcionário terá:
+
+- Nome e identificação.
+- Tipo profissional.
+- Habilidades.
+- Especialidade.
+- Experiência e potencial.
+- Salário.
+- Contrato.
+- Moral e satisfação.
+- Disponibilidade.
+- Histórico profissional.
+
+O mercado disponibilizará pilotos, engenheiros e mecânicos com perfis diferentes.
+
+A remuneração seguirá, como referência geral, a hierarquia piloto > engenheiro > mecânico. Essa hierarquia não será uma regra absoluta: profissionais excepcionais poderão ter salários superiores aos de funcionários de outras categorias.
+
+## 4.4. Contratos e relações profissionais
+
+O jogador poderá:
+
+- Contratar.
+- Renovar contratos.
+- Negociar salários.
+- Definir duração contratual.
+- Oferecer bônus, quando aplicável.
+- Promover funcionários.
+- Demitir profissionais.
+- Substituir funcionários insatisfeitos.
+
+Salários atrasados, promessas descumpridas, excesso de trabalho e conflitos poderão prejudicar a moral e a retenção de talentos.
+
+A IA rival também poderá contratar, negociar, renovar e dispensar funcionários.
+
+---
+
+# 5. INSTALAÇÕES E INFRAESTRUTURA
+
+## 5.1. Sistema de níveis
+
+As instalações terão níveis simples de visualizar.
+
+Exemplo:
+
+**Túnel de vento — Nível 1/6**
+
+O nível representa a capacidade da instalação de contribuir para determinados projetos.
+
+Instalações planejadas:
+
+- Túnel de vento.
+- Oficina de fabricação.
+- Centro de simulação.
+- Oficina de manutenção.
+- Laboratório de motores e componentes.
+- Centro de treinamento.
+- Instalações de análise e pesquisa.
+
+Cada instalação deverá ter uma função compreensível e diferenciada.
+
+## 5.2. Evolução das instalações
+
+Melhorar uma instalação poderá exigir:
+
+- Dinheiro.
+- Tempo de construção.
+- Categoria mínima ou autorização.
+- Manutenção.
+- Espaço ou infraestrutura adequada.
+
+Os níveis superiores aumentam capacidade, eficiência ou qualidade potencial, sem garantir resultados perfeitos.
+
+## 5.3. Limites por categoria
+
+Categorias inferiores terão tetos menores de desenvolvimento.
+
+Referência inicial a testar:
+
+| Categoria | Teto ilustrativo |
+|---|---:|
+| Amadora | Nível 1–2 |
+| Regional | Nível 3 |
+| Nacional | Nível 4 |
+| Profissional | Nível 5 |
+| Elite | Nível 6 |
+
+Os tetos poderão variar conforme o tipo de instalação e os regulamentos. A categoria determina o limite permitido, enquanto os recursos da equipe determinam o que ela consegue construir e manter.
+
+---
+
+# 6. CALENDÁRIO E TEMPO
+
+## 6.1. Ciclo entre corridas
+
+As corridas não devem acontecer imediatamente após a anterior sem oportunidade de gestão.
+
+O calendário usará intervalos de duas a quatro semanas, conforme a categoria e o calendário configurado.
+
+O intervalo será dividido em dias ou semanas de planejamento, execução de projetos e preparação.
+
+## 6.2. Ações durante o intervalo
+
+O jogador poderá:
+
+- Negociar contratações.
+- Iniciar ou cancelar projetos.
+- Fabricar peças.
+- Melhorar instalações.
+- Realizar manutenção.
+- Treinar funcionários.
+- Preparar a estratégia da próxima etapa.
+- Negociar patrocínios.
+- Administrar contratos e finanças.
+
+Projetos e contratos avançam com a passagem do tempo.
+
+O jogo deve informar claramente quando uma ação será concluída e quais atividades ainda estão em andamento.
+
+## 6.3. Avanço do calendário
+
+O avanço de tempo deverá ser uma ação explícita do jogador, com possibilidade de revisar tarefas importantes antes de prosseguir.
+
+O sistema precisa impedir que o jogador perca silenciosamente uma corrida, contrato importante ou decisão pendente.
+
+---
+
+# 7. DESENVOLVIMENTO E FABRICAÇÃO DE PEÇAS
+
+## 7.1. Fluxo de desenvolvimento
+
+O sistema será dividido conceitualmente em:
+
+1. Pesquisa.
+2. Projeto.
+3. Fabricação.
+4. Controle de qualidade.
+5. Disponibilização no estoque.
+6. Instalação no carro.
+
+A interface poderá reunir etapas compatíveis em um fluxo simplificado, sem obrigar o jogador a abrir telas separadas para cada detalhe técnico.
+
+## 7.2. Qualidade das peças
+
+Toda unidade fabricada será classificada em uma das três qualidades:
+
+- Ruim.
+- Média.
+- Boa.
+
+A qualidade afeta o desempenho ou a confiabilidade de acordo com o tipo de componente.
+
+Uma peça boa não será automaticamente a peça mais rápida: qualidade de fabricação e eficiência do projeto serão conceitos separados.
+
+## 7.3. Cálculo interno de qualidade
+
+O resultado será calculado pelo jogo com base em fatores como:
+
+- Nível da instalação.
+- Habilidades e especialidades dos engenheiros.
+- Tecnologia disponível.
+- Complexidade do projeto.
+- Controle de qualidade.
+- Falhas e retrabalho.
+- Recursos e tempo investidos.
+
+A instalação define parte do potencial; a equipe técnica e as condições de produção influenciam o resultado final.
+
+A qualidade será determinada automaticamente. O jogador não precisará manipular fórmulas técnicas.
+
+## 7.4. Falhas de fabricação
+
+Falhas poderão resultar em:
+
+- Qualidade inferior.
+- Atraso.
+- Aumento de custo.
+- Retrabalho.
+- Reprovação da unidade.
+
+Uma falha não deverá destruir automaticamente todo o investimento. A gravidade e as consequências precisam ser proporcionais.
+
+## 7.5. Estoque de peças
+
+Cada unidade concluída e aprovada adicionará uma unidade ao estoque.
+
+O inventário será separado por:
+
+- Tipo de peça.
+- Quantidade.
+- Qualidade.
+- Condição e desgaste, quando aplicável.
+- Compatibilidade com os carros e categorias.
+
+Exemplo:
+
+**Asa dianteira**
+- 1 unidade boa.
+- 2 unidades médias.
+- 0 unidades ruins.
+
+O jogador poderá fabricar antecipadamente e escolher qual unidade instalar.
+
+Peças consumidas, danificadas, descartadas ou instaladas devem atualizar o inventário corretamente.
+
+## 7.6. Componentes planejados
+
+- Motor e transmissão.
+- Asa dianteira.
+- Asa traseira.
+- Suspensão.
+- Chassi.
+- Freios.
+- Sistemas de refrigeração.
+- Componentes de confiabilidade.
+
+A lista final dependerá dos carros e dos sistemas técnicos já suportados pelo GridLife.
+
+## 7.7. Pesquisa e melhorias
+
+Os projetos devem possuir custo, prazo e efeito compreensível.
+
+As melhorias poderão influenciar:
+
+- Potência.
+- Aerodinâmica.
+- Estabilidade.
+- Desgaste.
+- Confiabilidade.
+- Peso.
+- Consumo.
+- Comportamento em determinados tipos de circuito.
+
+As regras de cada categoria limitarão o desenvolvimento permitido.
+
+---
+
+# 8. PATROCINADORES
+
+## 8.1. Espaços de patrocínio
+
+Cada carro terá cinco espaços:
+
+- Três espaços de patrocínio longo.
+- Dois espaços de patrocínio curto.
+
+A interface exibirá uma representação visual do carro com caixas clicáveis identificadas como espaços de patrocínio.
+
+Ao clicar em um espaço vazio, o jogador poderá consultar ofertas compatíveis. Ao clicar em um espaço ocupado, poderá consultar o contrato, a duração, os objetivos e as condições de renovação.
+
+## 8.2. Mercado de patrocinadores
+
+O mercado apresentará três opções principais e até três opções extras, quando disponíveis.
+
+A disponibilidade dependerá do nível da equipe, reputação, categoria e compatibilidade comercial.
+
+Cada oferta informará:
+
+- Nome e identidade visual.
+- Nível do patrocinador.
+- Pagamento.
+- Objetivos.
+- Duração.
+- Requisitos.
+- Penalidades e riscos, quando aplicáveis.
+
+## 8.3. Tipos de pagamento
+
+Patrocínios poderão oferecer:
+
+- Dinheiro instantâneo.
+- Pagamento por corrida.
+- Pagamento condicionado à posição final.
+- Pagamento condicionado à classificação.
+- Contratos com múltiplas condições.
+
+As condições serão exibidas antes da assinatura.
+
+## 8.4. Confirmação e acompanhamento
+
+O jogador deverá confirmar ou cancelar cada contrato antes de aplicá-lo.
+
+O jogo nunca deverá substituir silenciosamente um patrocinador ativo.
+
+A tela de contratos mostrará:
+
+- Patrocinador.
+- Objetivo.
+- Pagamento previsto.
+- Dias ou corridas restantes.
+- Progresso.
+- Estado do contrato.
+- Pagamentos recebidos.
+- Risco de descumprimento.
+
+Pagamentos instantâneos serão destacados visualmente, por exemplo, com `+$12.000`.
+
+Cada pagamento deve ser contabilizado apenas uma vez.
+
+---
+
+# 9. ECONOMIA E FINANÇAS
+
+## 9.1. Receitas
+
+- Patrocínios.
+- Premiações.
+- Contratos comerciais.
+- Pagamentos condicionados a resultados.
+- Outras fontes previstas pelas regras do campeonato.
+
+## 9.2. Despesas
+
+- Salários.
+- Contratações e bônus.
+- Pesquisa.
+- Fabricação.
+- Instalações.
+- Manutenção.
+- Reparos.
+- Logística.
+- Participação em corridas.
+- Multas e penalidades.
+
+## 9.3. Painel financeiro
+
+O jogador visualizará:
+
+- Saldo atual.
+- Receitas recebidas.
+- Despesas pagas.
+- Custos previstos.
+- Salários futuros.
+- Projetos em andamento.
+- Projeção financeira até a próxima etapa.
+
+O objetivo é permitir decisões conscientes sem exigir contabilidade manual.
+
+## 9.4. Crise financeira
+
+A equipe poderá enfrentar dificuldades se gastar além da capacidade de receita.
+
+Consequências possíveis:
+
+- Cancelamento ou adiamento de projetos.
+- Dificuldade para renovar contratos.
+- Redução de instalações.
+- Perda de funcionários.
+- Necessidade de novos patrocínios ou reestruturação.
+
+O sistema deverá avisar antes de decisões financeiras perigosas e evitar punições arbitrárias.
+
+---
+
+# 10. CORRIDAS E PIT STOPS
+
+## 10.1. Integração com o sistema existente
+
+A gestão deverá aproveitar a simulação de corrida existente no GridLife sempre que possível, evitando a criação de um segundo motor de corrida independente.
+
+## 10.2. Influência da equipe
+
+O resultado da corrida dependerá da combinação de:
+
+- Habilidade do piloto.
+- Desempenho e confiabilidade do carro.
+- Qualidade das peças.
+- Configuração.
+- Estratégia.
+- Condições do circuito.
+- Clima, quando suportado.
+- Condição dos componentes.
+- Qualidade da equipe de mecânicos.
+
+Nenhum fator isolado deverá determinar automaticamente o resultado.
+
+## 10.3. Pit stops
+
+Os mecânicos influenciarão:
+
+- Velocidade de execução.
+- Consistência.
+- Probabilidade de erro.
+- Eficiência sob pressão.
+- Capacidade de recuperação operacional.
+
+Equipamentos, treinamento, coordenação e condição da equipe também poderão contribuir.
+
+Os valores exatos de duração e probabilidade de falha serão definidos em testes de balanceamento.
+
+## 10.4. Controle da corrida
+
+Opções previstas:
+
+- Simulação automática.
+- Controle estratégico pelo jogador.
+- Participação direta, quando compatível com os sistemas existentes.
+
+Os resultados atualizarão o campeonato, as finanças, os contratos, o desgaste, a moral e o histórico da equipe.
+
+---
+
+# 11. EQUIPES RIVAIS E INTELIGÊNCIA ARTIFICIAL
+
+As equipes rivais deverão tomar decisões próprias.
+
+A IA poderá:
+
+- Contratar e dispensar funcionários.
+- Negociar salários e contratos.
+- Fabricar peças.
+- Desenvolver instalações.
+- Assinar patrocínios.
+- Administrar orçamentos.
+- Melhorar carros.
+- Alterar estratégias.
+- Promover talentos.
+- Enfrentar crises financeiras.
+
+As equipes poderão possuir perfis distintos, como conservadoras, agressivas no desenvolvimento, especializadas em talentos jovens ou com grande capacidade financeira.
+
+O objetivo é produzir um campeonato dinâmico, em que as forças relativas mudem ao longo das temporadas.
+
+A IA deverá obedecer às mesmas regras fundamentais de tempo, orçamento, qualidade e regulamento aplicadas ao jogador.
+
+---
+
+# 12. PROGRESSÃO E CARREIRA
+
+## 12.1. Progressão do gestor
+
+O gestor evolui por meio de suas decisões, experiências e resultados.
+
+O painel exibirá:
+
+- Estatísticas.
+- Experiência.
+- Reputação.
+- Equipes comandadas.
+- Temporadas.
+- Conquistas.
+- Resultados.
+- Histórico de decisões relevantes.
+
+## 12.2. Progressão da equipe
+
+A equipe evolui por meio de:
+
+- Resultados esportivos.
+- Investimentos.
+- Contratações.
+- Desenvolvimento técnico.
+- Instalações.
+- Reputação.
+- Contratos comerciais.
+- Promoção entre categorias, conforme as regras.
+
+## 12.3. Objetivos
+
+Objetivos poderão envolver:
+
+- Posição no campeonato.
+- Desenvolvimento do carro.
+- Saúde financeira.
+- Cumprimento de contratos.
+- Formação de pilotos.
+- Melhoria das instalações.
+- Recuperação de uma equipe em crise.
+
+As metas deverão ser compatíveis com os recursos disponíveis.
+
+---
+
+# 13. INTERFACE E EXPERIÊNCIA DO JOGADOR
+
+## 13.1. Painel principal
+
+A tela central mostrará:
+
+- Saldo financeiro.
+- Próxima corrida.
+- Posição no campeonato.
+- Condição do carro.
+- Projetos em andamento.
+- Estado dos contratos.
+- Alertas importantes.
+- Ações recomendadas.
+
+## 13.2. Telas principais
+
+- Carreira.
+- Central de gestão.
+- Calendário.
+- Equipe e funcionários.
+- Mercado.
+- Carro.
+- Instalações.
+- Engenharia e fabricação.
+- Estoque.
+- Patrocinadores.
+- Finanças.
+- Corrida.
+- Campeonato.
+- Histórico.
+
+## 13.3. Simplicidade e clareza
+
+Toda ação relevante deverá informar:
+
+- O que acontecerá.
+- Quanto custará.
+- Quanto tempo levará.
+- Quais são os requisitos.
+- Qual é o resultado esperado.
+- Quais são os principais riscos.
+
+A interface deve evitar excesso de telas, parâmetros redundantes e informações técnicas sem utilidade para a decisão do jogador.
+
+## 13.4. Relatórios explicativos
+
+Após eventos relevantes, o jogo deverá explicar suas causas prováveis.
+
+Exemplos:
+
+- Pit stop lento por baixa coordenação.
+- Projeto atrasado por falta de capacidade.
+- Queda de desempenho por desgaste.
+- Patrocinador perdido por objetivo não cumprido.
+- Crise financeira causada por despesas recorrentes elevadas.
+
+---
+
+# 14. SALVAMENTO E INTEGRIDADE DOS DADOS
+
+Os novos modos deverão possuir dados separados da carreira de piloto.
+
+O sistema precisará registrar corretamente:
+
+- Perfil do gestor.
+- Estatísticas e progressão.
+- Funcionários e contratos.
+- Instalações.
+- Projetos e prazos.
+- Estoque.
+- Carros e componentes.
+- Patrocinadores.
+- Finanças.
+- Calendário.
+- Resultados e histórico.
+
+Regras essenciais:
+
+- Pagamentos não podem ser duplicados.
+- Uma peça não pode aparecer no estoque duas vezes por erro de atualização.
+- Projetos não podem concluir duas vezes.
+- Contratos devem expirar no momento correto.
+- Salvamentos devem preservar estados intermediários.
+- A ausência de um recurso opcional não deve corromper a carreira.
+- A carreira de piloto existente deve continuar funcionando.
+
+---
+
+# 15. ESCOPO E ORDEM DE IMPLEMENTAÇÃO
+
+## Fase 1 — Fundação
+- Seleção do modo.
+- Criação do gestor.
+- Estilos e estatísticas.
+- Equipe inicial.
+- Calendário.
+- Economia básica.
+- Salvamentos independentes.
+
+## Fase 2 — Equipe e mercado
+- Pilotos, engenheiros e mecânicos.
+- Contratos e salários.
+- Moral e satisfação.
+- Mercado de contratação.
+- Instalações e níveis.
+
+## Fase 3 — Desenvolvimento
+- Pesquisa.
+- Projetos.
+- Fabricação.
+- Qualidade de peças.
+- Estoque.
+- Instalação e substituição de componentes.
+
+## Fase 4 — Patrocínios
+- Representação visual do carro.
+- Cinco espaços de patrocínio.
+- Ofertas e contratos.
+- Pagamentos e objetivos.
+- Integração financeira.
+
+## Fase 5 — Corridas
+- Integração com a simulação existente.
+- Influência dos funcionários.
+- Pit stops.
+- Desgaste e confiabilidade.
+- Atualização de resultados e contratos.
+
+## Fase 6 — Campeonato dinâmico
+- IA rival.
+- Mercado competitivo.
+- Evolução das equipes.
+- Regulamentos.
+- Progressão entre categorias.
+
+## Fase 7 — Testes e balanceamento
+- Testes de economia.
+- Testes de progressão.
+- Testes de qualidade de fabricação.
+- Testes de IA.
+- Testes de salvamento.
+- Testes de contratos e pagamentos.
+- Verificação de compatibilidade com a carreira de piloto.
+
+---
+
+# 16. CRITÉRIOS DE ACEITAÇÃO
+
+O sistema será considerado funcional quando:
+
+1. O jogador conseguir iniciar uma carreira de gestor sem interferir na carreira de piloto.
+2. O nome e o estilo do gestor forem preservados no salvamento.
+3. As estatísticas evoluírem de acordo com ações relevantes.
+4. As instalações respeitarem os limites de categoria.
+5. Os funcionários afetarem os sistemas relacionados às suas competências.
+6. O calendário avançar sem concluir projetos antes do prazo.
+7. A fabricação adicionar corretamente cada unidade aprovada ao estoque.
+8. A qualidade das peças considerar instalações, engenheiros e falhas.
+9. Os patrocinadores respeitarem os cinco espaços e exigirem confirmação contratual.
+10. Pagamentos e despesas forem registrados corretamente.
+11. A gestão influenciar o desempenho nas corridas.
+12. As equipes rivais evoluírem sem quebrar as regras econômicas.
+13. O jogador compreender os custos, prazos e consequências antes de confirmar ações importantes.
+14. A carreira de piloto continuar funcional após a integração.
+
+---
+
+# 17. DECISÕES AINDA PENDENTES
+
+Os pontos abaixo precisam ser definidos antes da implementação detalhada:
+
+- Categorias oficiais e respectivos tetos de instalações.
+- Lista final de peças fabricáveis.
+- Fórmulas e faixas de qualidade.
+- Custos, salários e prazos por categoria.
+- Bônus definitivos dos estilos de gestão.
+- Frequência de atualização do mercado.
+- Regras de promoção e rebaixamento.
+- Consequências de demissão e crise financeira.
+- Limites técnicos de cada campeonato.
+- Grau de autonomia da IA rival.
+- Compatibilidade exata com os sistemas atuais de corrida e salvamento.
+
+Esses valores devem ser calibrados com testes, em vez de definidos arbitrariamente como definitivos.
+
+---
+
+# 18. DIRETRIZ FINAL
+
+O GridLife deverá oferecer profundidade estratégica sem transformar a gestão em uma planilha complexa.
+
+O jogador escolhe prioridades, contrata pessoas, investe recursos e toma decisões. O jogo simula as consequências usando sistemas interligados.
+
+A progressão deve ser compreensível, as informações devem ser transparentes e as falhas devem ter explicações. Nenhum sistema novo deve comprometer a carreira de piloto existente.
+
+**Objetivo final:** permitir que o jogador construa e administre uma equipe de automobilismo completa, desde uma estrutura modesta até uma organização competitiva de elite, com liberdade para desenvolver sua própria identidade como gestor.
