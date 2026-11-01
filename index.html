@@ -120,7 +120,7 @@ function vLoja0(){$('v').innerHTML=`<div class="card"><h3>Loja do salário</h3><
 function buy(k){const l=s.up[k]||0,c=px(UP[k][1]*UC[l]),e=UE[l];if(s.bank<c)return;s.bank-=c;s.up[k]=l+1;const S=s.st;
  if(k=='sim'){S.vel+=2*e;S.con+=e}if(k=='per')S.fis+=4*e;if(k=='coa'){S.ult+=3*e;S.foc+=2*e}if(k=='psi')S.foc+=5*e;save();draw()}
 function vCamp(){vCamp0();$('v').innerHTML+=lastCard(5)+hofCard();const w=me();$('v').innerHTML+=w.mate?`<div class="card"><h3>Companheiro de equipe</h3><p>${w.mate.n}: <b>${w.mate.pts}</b> pts · Você: <b>${w.d.pts}</b> pts</p></div>`:''}
-function vCamp0(){const st=stand(),l=st[0].d.pts;$('v').innerHTML=`<div class="card"><h3>${tier().n} · Etapa ${s.rc}/${s.free||tier().rc}</h3><table><tr><th>Pos</th><th>Piloto</th><th>Equipe</th><th>Carro</th><th>Pts</th><th>Dif</th></tr>${st.map((w,i)=>`<tr class="${w.d.me?'me':''}"><td>${i+1}º</td><td>${w.d.n}${w.d.age?' <span class="sm">'+w.d.age+'</span>':''}</td><td>${w.n}</td><td>${Math.round(w.car)}</td><td><b>${w.d.pts}</b></td><td class="sm">${i?'-'+(l-w.d.pts):'Líder'}</td></tr>`).join('')}</table></div>`}
+function vCamp0(){const st=stand();if(!st||!st.length){$('v').innerHTML='<div class="card"><p class="sm">Sem dados de campeonato.</p></div>';return;}const l=(st[0]&&st[0].d)?st[0].d.pts:0;$('v').innerHTML=`<div class="card"><h3>${tier().n} · Etapa ${s.rc}/${s.free||tier().rc}</h3><table><tr><th>Pos</th><th>Piloto</th><th>Equipe</th><th>Carro</th><th>Pts</th><th>Dif</th></tr>${st.map((w,i)=>`<tr class="${w.d.me?'me':''}"><td>${i+1}º</td><td>${w.d.n}${w.d.age?' <span class="sm">'+w.d.age+'</span>':''}</td><td>${w.n}</td><td>${Math.round(w.car)}</td><td><b>${w.d.pts}</b></td><td class="sm">${i?'-'+(l-w.d.pts):'Líder'}</td></tr>`).join('')}</table></div>`}
 const MT=[-2,0,3],ME=[-1.5,0,2.5],DR=[-1,0,2],TW=[.8,1,1.3],EW=[.7,1,1.5],DW=[.9,1,1.15];
 function gSetModeShared(field,val){ if(RC.me1) RC.me1[field]=val; if(RC.me2) RC.me2[field]=val; if(RC.me) RC.me[field]=val; }
 
@@ -148,7 +148,29 @@ function gModosIniciaisHTML(){
 }
 
 function vCorrida(){const t=tier();if(!QL&&s.qd===s.rc&&s.qlv)QL=s.qlv;if(s.fcr!==s.rc){s.fcr=s.rc;s.fcv=Math.random()<.3}if(s.nc){$('v').innerHTML=`<div class="card"><h3>Sem contrato</h3><p class="sm">Você precisa de uma equipe para correr. Abra a aba Negócios.</p><button class="b w" style="margin-top:8px" onclick="V='neg';draw()">Ir para Negócios</button></div>`;return}if(!RC){$('v').innerHTML=`<div class="dayh"><b>DIA DE CORRIDA</b><button class="b s" onclick="V='perfil';draw()">⬅ Voltar</button></div><div class="card"><h3>${trk()}</h3><p class="sm">${tkTxt(TKC(tkI()))}<br>${t.lp} voltas. ${t.pit==2?'Pit stop obrigatório. ':t.pit?'Pit stop opcional. ':'Sem pit stop. '}</p><p class="sm">Previsão: ${s.fcv?'chuva provável':'tempo seco'}</p>${s.free?`<div class="g"><div><label class="sm">Clima</label><select id="wx0"><option value="r">Aleatório</option><option value="s">Seco</option><option value="c">Chuva</option></select></div><div><label class="sm">Tamanho da prova</label><select id="lp0"><option value=".5">Curta</option><option value="1" selected>Normal</option><option value="1.5">Longa</option></select></div></div>`:''}${QL?`<p class="sm" style="margin-top:8px">Modos iniciais</p><div class="g">${PM.map(x=>`<div><label class="sm">${x[1]}</label><div class="md" id="mp_${x[0]}">${MD[x[0]][(s.pm||{})[x[0]]??1]}</div><select onchange="s.pm=s.pm||{};s.pm['${x[0]}']=+this.value;$('mp_${x[0]}').textContent=MD['${x[0]}'][this.value]">${[0,1,2].map(j=>`<option value="${j}" ${j==((s.pm||{})[x[0]]??1)?'selected':''}>${x[2][j]}</option>`).join('')}</select></div>`).join('')}</div>`:''}${QL?gridTower():''}${QL&&!s.free?'':'<button class="b s w" style="margin-top:10px" onclick="qualy()">Qualificar</button>'}${QL?`<button class="b w" style="margin-top:8px" onclick="startRace()">Largar</button><button class="b s w" style="margin-top:8px" onclick="startRace(1)">Simular até o fim</button>`:'<p class="sm" style="margin-top:8px">Qualifique para liberar a largada.</p>'}</div>`;return}
- $('v').innerHTML=`<div class="dayh"><b>DIA DE CORRIDA · ${trk()}</b><button class="b s" onclick="abandon()">Abandonar</button></div><div class="rc"><div><div class="card tw"><div class="th">TORRE DE TEMPO</div><div id="lb"></div></div><button class="b s w" style="margin:8px 0" onclick="rankOpen()">Classificação</button><div class="card"><h3>Controle de prova</h3><div id="rci"></div></div></div><div><div class="pre" style="margin-bottom:8px"><button class="b ${m3(2)}" onclick="preset(2,2,2)">Atacar</button><button class="b ${m3(1)}" onclick="preset(1,1,1)">Normal</button><button class="b ${m3(0)}" onclick="preset(0,0,0)">Conservar</button><button class="b y" id="bp" ${(t.pit||RC.endu)&&!RC.rally?'':'disabled'} onclick="callPit()">Box agora</button><button class="b" id="bz" onclick="pz()">${RC.ps?'Continuar':'Pausar'}</button></div><div class="pre" style="margin-bottom:8px"><button class="b s" id="bs" onclick="spd()">Velocidade: ${SPD[RC.si]}×</button><button class="b s" onclick="ff()">Simular até o fim ⏩</button></div><div class="card"><div class="row"><span class="tagc" id="lp"></span><span><span class="sm" id="wx"></span> <span class="live">AO VIVO</span></span></div><svg id="tk" viewBox="0 0 600 300" role="img" aria-label="Mapa da pista">${trackSvg()}<g id="cars"></g></svg></div><div class="card"><h3>Ajustes finos dos modos</h3><div class="g" style="margin-top:8px">${[['mt','Pneus',['Leve','Normal','Forçar']],['me','Motor',['Seguro','Padrão','Ataque']],['dr','Direção',['Suave','Normal','Agressiva']]].concat(RC.fuel?[['fm','Combustível',['Economia','Normal','Qualify']]]:[]).map(x=>`<div><label class="sm">${x[1]}</label><div class="md" id="md_${x[0]}">${MD[x[0]][RC.me[x[0]]]}</div><select onchange="RC.me.${x[0]}=+this.value;$('md_${x[0]}').textContent=MD['${x[0]}'][this.value]">${[0,1,2].map(j=>`<option value="${j}" ${RC.me[x[0]]==j?'selected':''}>${x[2][j]}</option>`).join('')}</select></div>`).join('')}</div></div></div><div><div class="card"><h3>Telemetria</h3><div class="st" id="tl"></div>${wgHtml()}<div id="t4"></div></div><div class="card"><h3>Estratégia</h3><div id="pw"></div></div><div class="card"><h3>Rádio da equipe</h3><div class="rr" id="lg"></div></div></div></div>`;sh();ovl(RC.ps);if(!RC.raf){RC.raf=1;anim()}}
+ const _isG=isG();
+ /* ── Bug 4: ajustes finos – piloto único ou por carro (gestor) ── */
+ const FINE_KEYS=[['mt','Pneus',['Leve','Normal','Forçar']],['me','Motor',['Seguro','Padrão','Ataque']],['dr','Direção',['Suave','Normal','Agressiva']]].concat(RC.fuel?[['fm','Combustível',['Economia','Normal','Qualify']]]:[]);
+ function fineBlock(carObj,suffix,label,color){
+  return`<div class="card" style="border-left-color:${color}">
+   <div style="font-size:.65rem;font-weight:800;letter-spacing:2px;color:${color};margin-bottom:8px">${label}</div>
+   <div class="g" style="margin-top:0">${FINE_KEYS.map(x=>`<div><label class="sm">${x[1]}</label><div class="md" id="md_${x[0]}${suffix}">${MD[x[0]][carObj[x[0]]??1]}</div><select onchange="RC.${carObj===RC.me?'me':carObj===RC.me1?'me1':'me2'}.${x[0]}=+this.value;$('md_${x[0]}${suffix}').textContent=MD['${x[0]}'][this.value]">${[0,1,2].map(j=>`<option value="${j}" ${(carObj[x[0]]??1)==j?'selected':''}>${x[2][j]}</option>`).join('')}</select></div>`).join('')}</div>
+  </div>`;
+ }
+ let fineHTML;
+ if(_isG){
+  const pil0=isG()&&s.g?gPil():[];
+  const n0=pil0[0]?pil0[0].n:'Carro 1', n1=pil0[1]?pil0[1].n:'Carro 2';
+  if(!RC.me1)RC.me1=RC.cars.filter(c=>c.isC1)[0];
+  if(!RC.me2)RC.me2=RC.cars.filter(c=>c.isC2)[0];
+  const c1=RC.me1||(RC.me||RC.cars[0]),c2=RC.me2||RC.cars[1];
+  fineHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${fineBlock(c1,'_c1',n0,'#facc15')}${fineBlock(c2,'_c2',n1,'#38bdf8')}</div>`;
+ }else{
+  fineHTML=fineBlock(RC.me,'','VOCÊ','var(--r)');
+ }
+ /* ── Bug 3: volta/total no mapa ── */
+ const lapInfo=`<span class="tagc" id="lp"></span><span id="lptot" style="font-size:.7rem;color:#666;margin-left:4px"></span>`;
+ $('v').innerHTML=`<div class="dayh"><b>DIA DE CORRIDA · ${trk()}</b><button class="b s" onclick="abandon()">Abandonar</button></div><div class="rc"><div><div class="card tw"><div class="th">TORRE DE TEMPO</div><div id="lb"></div></div><button class="b s w" style="margin:8px 0" onclick="rankOpen()">Classificação</button><div class="card"><h3>Controle de prova</h3><div id="rci"></div></div></div><div><div class="pre" style="margin-bottom:8px">${_isG?`<button class="b s" onclick="gPitCall(0)">Box C1</button><button class="b s" onclick="gPitCall(1)">Box C2</button>`:`<button class="b ${m3(2)}" onclick="preset(2,2,2)">Atacar</button><button class="b ${m3(1)}" onclick="preset(1,1,1)">Normal</button><button class="b ${m3(0)}" onclick="preset(0,0,0)">Conservar</button><button class="b y" id="bp" ${(t.pit||RC.endu)&&!RC.rally?'':'disabled'} onclick="callPit()">Box agora</button>`}<button class="b" id="bz" onclick="pz()">${RC.ps?'Continuar':'Pausar'}</button></div><div class="pre" style="margin-bottom:8px"><button class="b s" id="bs" onclick="spd()">Velocidade: ${SPD[RC.si]}×</button><button class="b s" onclick="ff()">Simular até o fim ⏩</button></div><div class="card"><div class="row"><span style="display:flex;align-items:center;gap:6px">${lapInfo}<span class="sm" id="wx"></span></span><span class="live">AO VIVO</span></div><svg id="tk" viewBox="0 0 600 300" role="img" aria-label="Mapa da pista">${trackSvg()}<g id="cars"></g></svg></div><div class="card"><h3>Ajustes finos dos modos</h3>${fineHTML}</div></div><div><div class="card"><h3>Telemetria</h3><div id="tl" class="st"></div>${_isG?'':wgHtml()}<div id="t4"></div></div><div class="card"><h3>Estratégia</h3><div id="pw"></div></div><div class="card"><h3>Rádio da equipe</h3><div class="rr" id="lg"></div></div></div></div>`;sh();ovl(RC.ps);if(!RC.raf){RC.raf=1;anim()}}
 function startRace(auto){const t=tier(),wv=($('wx0')||{value:'r'}).value,ds=s.disc||'c',L=Math.max(4,Math.round(t.lp*(ds=='e'?2.5:1)*(+($('lp0')||{value:1}).value))),rain=wv=='c'||(wv=='r'&&s.fcv),cars=s.W.map((w,i)=>{const m=!!w.d.me,sk=m?.55*ef('vel')+.25*ef('con')+.2*ef('foc'):w.d.sk;return{n:w.d.n,d:w.d,t:w.n,me:m,vel:m?sk:sk,con:m?ef('con'):sk,foc:m?ef('foc'):sk,ult:m?ef('ult'):sk+RN(-5,5),fis:m?ef('fis'):sk,car:w.car+(w.aff?w.aff[s.rc%14]:0),eff:w.eff,rel:w.rel,pitT:7-w.eff/25,tot:0,tire:100,dmg:0,pits:0,pen:0,wet:true,mt:1,me:m?1:0,dr:1,pit:0}});
  cars.forEach(c=>{c.isMe=c.me===1||c.d.me;});cars.forEach(c=>{c.pl=!!c.d.me;c.m1=c.me;c.me=c.pl?c.m1:0});
  {const n0=s.W.length;for(let i=0;i<n0;i++){const b=cars[i],mw=s.W[i].mate;if(mw)cars.push({...b,n:mw.n,d:mw,pl:false,me:0,m1:0,vel:mw.sk,con:mw.sk,foc:mw.sk,ult:mw.sk,fis:mw.sk})}}cars.forEach((c,i)=>{const w=s.W[i%s.W.length];c.mk=i<s.W.length?(w.mate?w.mate.sk:c.vel):(w.d.me?(.55*ef('vel')+.25*ef('con')+.2*ef('foc')):w.d.sk)});cars.forEach(c=>{c.fuel=c.pl?[60,80,100][(s.pm||{}).fu??1]:((ds=='r'||(!t.pit&&ds!='e'))?80:RN(70,100));c.fm=1;c.cp=c.pl?(s.pm||{}).cp??1:Math.random()<.3?0:Math.random()<.7?1:2;c.nx=c.cp;c.pt=RN(30,45);c.form=G()*FORM});
@@ -232,9 +254,34 @@ function hofCard(){const H=s.hof||[];return H.length?`<div class="card"><h3>Hall
 const tcol=t=>'hsl('+([...String(t)].reduce((a,x)=>(a*31+x.charCodeAt(0))>>>0,7)%360)+',70%,55%)',cod=n=>n.split(' ').pop().slice(0,3).toUpperCase(),m3=v=>RC.me.mt==v&&RC.me.me==v&&RC.me.dr==v?'on':'';
 const TP=a=>{const k=s.rc*.7;return[300+255*Math.cos(a)*(1+.08*Math.cos(2*a+k)),150+105*Math.sin(a)*(1+.12*Math.sin(3*a+k))]};
 function trackSvg(){let d='';for(let i=0;i<=120;i++){const p=TP(i/120*6.2832);d+=(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)}const q=TP(0);return`<path d="${d}Z" fill="none" stroke="#1a2130" stroke-width="26" stroke-linejoin="round"/><path d="${d}Z" fill="none" stroke="#33415c" stroke-width="2" stroke-dasharray="6 8"/><rect x="${q[0]-2}" y="${q[1]-15}" width="4" height="30" fill="#fff"/>`}
-function anim(){if(!RC||!$('tk')){if(RC)RC.raf=0;return}const r=RC,f=r.ps?(r.pf||0):cl((performance.now()-r.t0)/(r.base/SPD[r.si]),0,1);r.pf=f;const o=r.ord||[],l=r.l0||0;
- $('cars').innerHTML=o.filter(c=>!c.dnf).map(c=>{const u=((f-(c.tot-l)/r.tr)%1+1)%1,p=TP(u*6.2832);return`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${c.pl?8:5}" fill="${c.pl?'#e11d48':tcol(c.t)}" stroke="#000" stroke-width="2"/>${c.pl?`<text x="${(p[0]+11).toFixed(1)}" y="${(p[1]-9).toFixed(1)}" fill="#fff" font-size="12" font-weight="700">VOCÊ</text>`:''}`}).join('');requestAnimationFrame(anim)}
+function anim(){if(!RC||!$('tk')){if(RC)RC.raf=0;return}
+ const r=RC,f=r.ps?(r.pf||0):cl((performance.now()-r.t0)/(r.base/SPD[r.si]),0,1);
+ r.pf=f;
+ const o=r.ord||[],l=r.l0||0;
+ const _isGest=isG();
+ const pil=_isGest&&s.g?gPil():[];
+ /* ── Bug 3: atualiza volta/total no mapa ── */
+ const lpEl=$('lp');if(lpEl)lpEl.textContent='V'+r.lap;
+ const lpTotEl=$('lptot');if(lpTotEl)lpTotEl.textContent='/ '+r.L;
+ /* ── Carros no mapa com nome ── */
+ $('cars').innerHTML=o.filter(c=>!c.dnf).map(c=>{
+  const u=((f-(c.tot-l)/r.tr)%1+1)%1,p=TP(u*6.2832);
+  let isMine=false,label='',color=tcol(c.t),r2=5;
+  if(_isGest){
+   if(c.isC1){isMine=true;color='#facc15';r2=8;label=pil[0]?pil[0].n.split(' ').pop():'C1';}
+   else if(c.isC2){isMine=true;color='#38bdf8';r2=8;label=pil[1]?pil[1].n.split(' ').pop():'C2';}
+  }else{
+   if(c.pl){isMine=true;color='#e11d48';r2=8;label='VOCÊ';}
+  }
+  const lx=(p[0]+r2+3).toFixed(1),ly=(p[1]-r2).toFixed(1);
+  return`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${r2}" fill="${color}" stroke="#000" stroke-width="1.5"/>`
+   +(isMine?`<text x="${lx}" y="${ly}" fill="${color}" font-size="11" font-weight="800" stroke="#000" stroke-width="2" paint-order="stroke">${label}</text>`:'');
+ }).join('');
+ requestAnimationFrame(anim)
+}
 function preset(a,b,c){const m=RC.me;m.mt=a;m.me=b;m.dr=c;m.fm=a;draw()}
+function gPitCall(idx){if(!RC)return;const c=idx==0?RC.me1:RC.me2;if(!c)return;RC.was=RC.ps;pz(true);RC.psl=RC.rain?3:c.cp;RC.pitTarget=c;RC.pitIdx=idx;pop('<h3>Box · Carro '+(idx+1)+'</h3><div class="g" style="margin-top:8px">'+CP.map((cp,j)=>'<button class="pc '+(j==RC.psl?'sel':'')+'" onclick="RC.psl='+j+';pitDraw()"><span class="cp c'+j+'" style="width:34px;height:34px;font-size:.9rem">'+'SMHW'[j]+'</span><b>'+cp[0]+'</b></button>').join('')+'</div><div class="row" style="margin-top:12px"><button class="b s" onclick="popX();pz(RC.was)">Cancelar</button><button class="b y" onclick="gPitGo()">Confirmar parada</button></div>')}
+function gPitGo(){if(!RC||!RC.pitTarget)return;RC.pitTarget.nx=RC.psl;RC.pitTarget.pit=1;lg('Box C'+(RC.pitIdx+1)+': '+CP[RC.psl][0]+'.','h');popX();pz(false)}
 function ff(){if(!RC)return;RC.auto=1;pz(false);clearInterval(RC.iv);while(RC&&RC.lap<RC.L)lap()}
 function gridTower(){const ks=Object.keys(QL).sort((a,b)=>QL[b]-QL[a]);return`<div class="card tw" style="margin-top:10px"><div class="th">GRID DE LARGADA</div>${ks.slice(0,18).map((n,i)=>{const w=s.W.find(q=>q.d.n==n||(q.mate&&q.mate.n==n));return`<div class="tr ${n==s.name?'me':''}"><b class="ps">${i+1}</b><i class="tc" style="background:${tcol(w?w.n:n)}"></i><span class="cd">${n==s.name?'VOCÊ':cod(n)}</span><span></span><span class="gp">${w?w.n:''}</span></div>`}).join('')}</div>`}
 const PD=['+0,15 s/volta · desgaste +35%','Equilibrado','−0,12 s/volta · desgaste −25%','Para pista molhada'],FEM=['Anika','Rafaela','Sofia','Hana','Lara','Nina','Chloe','Elena','Greta'],hs=x=>[...String(x)].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7),tcolD=t=>tcol(t).replace('70%,55%','60%,30%');
@@ -319,7 +366,7 @@ function eosPop(){if(!s||!s.eos)return;let d=$('eos');if(!d){d=document.createEl
 <div class="card"><h3>Rivalidade e missões</h3><p class="sm">Elias Vance: você ${RV()[0]} × ${RV()[1]} ele</p>${(s.ms||[]).map(q=>`<p style="${q.ok?'color:var(--g)':''}">${q.ok?'✓':'○'} ${MS[q.i][0]}</p>`).join('')}</div>
 ${chs.length?`<div class="card"><h3>Capítulos da história</h3>${chs.map(x=>`<p><b>${x[2]}</b><br><span class="sm">${x[3]}</span></p>`).join('')}</div>`:''}
 <div class="card"><h3>O que aconteceu na temporada</h3>${ev.map(t=>`<p class="sm" style="padding:3px 0">${t}</p>`).join('')||'<p class="sm">Temporada tranquila.</p>'}</div>`}
- else if(tb==1){const st=D.st,l=st[0].d.pts;b=`<div class="card"><h3>Pilotos</h3><div style="overflow-x:auto"><table><tr><th>Pos</th><th>Piloto</th><th>Equipe</th><th>Idade</th><th>Vit.</th><th>Poles</th><th>Pts</th><th>Dif</th></tr>${st.map((w,i)=>`<tr class="${w.d.me?'me':''}"><td>${i+1}º</td><td>${w.d.n}</td><td class="sm">${w.n}</td><td>${w.d.age||''}</td><td>${w.d.w||0}</td><td>${w.d.po||0}</td><td><b>${w.d.pts}</b></td><td class="sm">${i?'−'+(l-w.d.pts):'Campeão'}</td></tr>`).join('')}</table></div></div><div class="card"><h3>Equipes</h3><table><tr><th>Pos</th><th>Equipe</th><th>Pts</th></tr>${D.tm.map((x,i)=>`<tr class="${x[0]==s.tn?'me':''}"><td>${i+1}º</td><td>${x[0]}</td><td><b>${x[1]}</b></td></tr>`).join('')}</table></div>`}
+ else if(tb==1){const st=D.st||[];if(!st.length){b='<p class="sm">Sem dados.</p>';}else{const l=(st[0]&&st[0].d?st[0].d.pts:0);b=`<div class="card"><h3>Pilotos</h3><div style="overflow-x:auto"><table><tr><th>Pos</th><th>Piloto</th><th>Equipe</th><th>Idade</th><th>Vit.</th><th>Poles</th><th>Pts</th><th>Dif</th></tr>${st.map((w,i)=>`<tr class="${w.d.me?'me':''}"><td>${i+1}º</td><td>${w.d.n}</td><td class="sm">${w.n}</td><td>${w.d.age||''}</td><td>${w.d.w||0}</td><td>${w.d.po||0}</td><td><b>${w.d.pts}</b></td><td class="sm">${i?'−'+(l-w.d.pts):'Campeão'}</td></tr>`).join('')}</table></div></div><div class="card"><h3>Equipes</h3><table><tr><th>Pos</th><th>Equipe</th><th>Pts</th></tr>${D.tm.map((x,i)=>`<tr class="${x[0]==s.tn?'me':''}"><td>${i+1}º</td><td>${x[0]}</td><td><b>${x[1]}</b></td></tr>`).join('')}</table></div>`;}}
  else{const O=s.eoso||[],sg=v=>(v>0?'+':v<0?'−':'')+Math.abs(v),tl=(a,v,c)=>`<div>${a}<b${c?` style="color:${c}"`:''}>${v}</b></div>`,
   ft=(o,i)=>`<div class="card" style="margin:0"><div class="row"><b>${o.team}</b><span class="chip" style="color:${o.kind=='offer'?'#facc15':'var(--g)'}">${o.txt.toUpperCase()}</span></div><p class="sm">${TNM[o.disc||s.disc||'c'][o.t]} · ${LV[o.lv]} · carro ${o.car} · ${o.rank}º de ${o.N}</p><div class="st" style="margin:8px 0">${tl('EXIGE','Top '+o.goal)}${tl('COBRANÇA',['Baixa','Média','Alta','Muito alta'][o.pr],o.pr>=2?'#facc15':'')}${tl('SALÁRIO',M(o.sal)+'/corrida')}${tl('DURAÇÃO',o.y+' temp.')}${tl('MORAL',sg(o.mo),o.mo<0?'#ef4444':'var(--g)')}${tl('REP',sg(o.rep),o.rep<0?'#ef4444':o.rep>0?'var(--g)':'')}</div><button class="b w" onclick="eosSign(${i})">Assinar</button></div>`,
   fee=s.cy>1?Math.round(T[s.t].sal*2*(s.cy-1)):0,mxt=Math.min(4,Math.max(s.mx||0,s.t)+1);
@@ -364,45 +411,74 @@ function lap(){const r=RC,t=tier(),sc=r.sc>0;r.lap++;r.t0=performance.now();r.pf
 function sh(){
  const r=RC;if(!r||!$('lb'))return;
  const o=r.cars.slice().sort((a,b)=>(a.dnf?1:0)-(b.dnf?1:0)||a.tot-b.tot);
- const l=o[0].tot;
+ if(!o.length)return;
+ const l=o[0]?o[0].tot:0;
  const isGest=isG();
  const me1=r.me1||r.me;
- const me2=r.me2;
- const ix=isGest && me1 ? o.indexOf(me1) : o.indexOf(r.me);
+ const ix=isGest&&me1?o.indexOf(me1):o.indexOf(r.me);
  r.ord=o;r.l0=l;
+
+ /* ── Bug 1 fix: torre com NOMES dos pilotos ── */
+ const pil=isGest&&s.g?gPil():[];
  let html='';
  for(let i=0;i<o.length;i++){
   const c=o[i];
-  let label='VOCÊ';
+  let label,isMine=false;
   if(isGest){
-   if(c.isC1) label='CARRO 1'; else if(c.isC2) label='CARRO 2'; else label=cod(c.n);
-  } else {
-   label=c.pl?'VOCÊ':cod(c.n);
-  }
-  html+='<div class="tr '+(c.pl?'me':'')+'"><b class="ps">'+(i+1)+'</b><i class="tc" style="background:'+tcol(c.t)+'"></i><span class="cd">'+label+(r.fl&&r.fl.n==c.n?'<i class="pd"></i>':'')+'</span><span class="cp c'+c.cp+'" title="'+CP[c.cp][0]+'">'+'SMHW'[c.cp]+'</span><span class="gp">'+(c.dnf?'OUT':i?'+'+(c.tot-l).toFixed(3):'LÍDER')+'</span></div>';
+   if(c.isC1){label='<span style="color:#facc15">'+(pil[0]?pil[0].n:'C1')+'</span>';isMine=true;}
+   else if(c.isC2){label='<span style="color:#38bdf8">'+(pil[1]?pil[1].n:'C2')+'</span>';isMine=true;}
+   else label=cod(c.n);
+  }else{label=c.pl?'VOCÊ':cod(c.n);isMine=c.pl;}
+  html+='<div class="tr '+(isMine?'me':'')+'"><b class="ps">'+(i+1)+'</b><i class="tc" style="background:'+tcol(c.t)+'"></i><span class="cd">'+label+(r.fl&&r.fl.n==c.n?'<i class="pd"></i>':'')+'</span><span class="cp c'+c.cp+'" title="'+CP[c.cp][0]+'">'+'SMHW'[c.cp]+'</span><span class="gp">'+(c.dnf?'OUT':i?'+'+(c.tot-l).toFixed(3):'LÍDER')+'</span></div>';
  }
  $('lb').innerHTML=html;
- const rciEl=$('rci'); if(rciEl){ const card=rciEl.closest('.card'); if(card) card.style.display='none'; }
- const t4El=$('t4'); if(t4El) t4El.innerHTML='';
- const tlEl=$('tl'); 
+
+ /* controle de prova: esconder card vazio */
+ const rciEl=$('rci');if(rciEl){const card=rciEl.closest('.card');if(card)card.style.display='none';}
+ const t4El=$('t4');
+ const tlEl=$('tl');
  const pwEl=$('pw');
+
  if(isGest){
-  // Remove total painel telemetria do modo gestor (o que estava em azul)
-  if(tlEl){ const card=tlEl.closest('.card'); if(card) card.style.display='none'; else tlEl.innerHTML=''; }
-  if(t4El){ const card=t4El.closest('.card'); if(card) card.style.display='none'; }
-  // Esconde também o container de telemetria com 0%
-  const teleCards=document.querySelectorAll('.card');
-  for(let el of teleCards){ if(el.innerHTML.includes('TELEMETRIA') && el.innerHTML.includes('CARRO 1 POS')) el.style.display='none'; }
-  if(pwEl) pwEl.innerHTML=''; // remove também telemetria antiga
- } else {
-  if(tlEl) tlEl.closest('.card')?.style.removeProperty('display');
-  const m=r.me;
+  /* ── Bug 2 fix: telemetria 2 colunas com nomes ── */
+  if(tlEl){
+   const cars2=[r.me1,r.me2].filter(Boolean);
+   const COLORS=['#facc15','#38bdf8'];
+   tlEl.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:8px;';
+   tlEl.innerHTML=cars2.map((c,ci)=>{
+    if(!c)return'';
+    const nm=pil[ci]?pil[ci].n:'Carro '+(ci+1);
+    const tire=Math.round(c.tire||0),dmg=Math.round(c.dmg||0),fuel=Math.round(c.fuel||0);
+    const tc=tire>60?'#22c55e':tire>30?'#facc15':'#ef4444';
+    const dc=dmg<30?'#22c55e':dmg<60?'#facc15':'#ef4444';
+    const posN=o.indexOf(c)+1;
+    return'<div style="background:#0a0a0f;border:1px solid '+COLORS[ci]+'44;border-radius:8px;padding:10px">'
+     +'<div style="font-size:.65rem;font-weight:800;letter-spacing:2px;color:'+COLORS[ci]+';margin-bottom:8px;border-bottom:1px solid '+COLORS[ci]+'33;padding-bottom:4px">'+nm.toUpperCase()+'</div>'
+     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.72rem">'
+     +'<div style="text-align:center"><div style="color:#555;font-size:.55rem;letter-spacing:1px">ÚLTIMA VOLTA</div><b style="font-size:.95rem">'+(c.lt?fmt(c.lt):'—')+'</b></div>'
+     +'<div style="text-align:center"><div style="color:#555;font-size:.55rem;letter-spacing:1px">POSIÇÃO</div><b style="font-size:.95rem;color:'+COLORS[ci]+'">P'+posN+'</b></div>'
+     +'</div>'
+     +'<div style="margin-top:8px">'
+     +'<div style="display:flex;justify-content:space-between;font-size:.6rem;color:#555;letter-spacing:1px">PNEU<b style="color:'+tc+'">'+tire+'%</b></div>'
+     +'<div style="height:5px;background:#111;border-radius:3px;margin:2px 0 6px"><div style="height:100%;width:'+tire+'%;background:'+tc+';border-radius:3px;transition:width .3s"></div></div>'
+     +'<div style="display:flex;justify-content:space-between;font-size:.6rem;color:#555;letter-spacing:1px">DANO<b style="color:'+dc+'">'+dmg+'%</b></div>'
+     +'<div style="height:5px;background:#111;border-radius:3px;margin:2px 0 6px"><div style="height:100%;width:'+dmg+'%;background:'+dc+';border-radius:3px;transition:width .3s"></div></div>'
+     +(r.fuel?'<div style="display:flex;justify-content:space-between;font-size:.6rem;color:#555;letter-spacing:1px">COMBUSTÍVEL<b>'+fuel+'%</b></div><div style="height:5px;background:#111;border-radius:3px;margin:2px 0 6px"><div style="height:100%;width:'+fuel+'%;background:#38bdf8;border-radius:3px;transition:width .3s"></div></div>':'')
+     +'<div style="display:flex;justify-content:space-between;font-size:.6rem;color:#555;letter-spacing:1px;margin-top:2px">PNEU<b>'+'SMHW'[c.cp||0]+'</b></div>'
+     +'</div></div>';
+   }).join('');
+   const tlCard=tlEl.closest('.card');if(tlCard)tlCard.style.removeProperty('display');
+  }
+  if(t4El)t4El.innerHTML='';
+  if(pwEl)pwEl.innerHTML='';
+ }else{
+  if(tlEl){const card=tlEl.closest('.card');if(card)card.style.removeProperty('display');tlEl.style.cssText='';}
+  const m=r.me;if(!m)return;
   const gf=ix>0?'+'+(m.tot-o[ix-1].tot).toFixed(3):'—';
   const gb=ix<o.length-1&&!o[ix+1].dnf?'+'+(o[ix+1].tot-m.tot).toFixed(3):'—';
   const wr=r.pt!=null?Math.max(.1,r.pt-m.tire):10;r.pt=m.tire;
-  if(tlEl) tlEl.innerHTML='<div>ÚLTIMA VOLTA<b>'+(m.lt?fmt(m.lt):'--')+'</b></div><div>POSIÇÃO<b>P'+(ix+1)+'</b></div><div>GAP FRENTE<b>'+gf+'</b></div><div>GAP ATRÁS<b>'+gb+'</b></div>';
-  const w1=Math.max(0,Math.floor((m.tire-40)/wr)),w2=Math.max(0,Math.ceil((m.tire-15)/wr));
-  if(pwEl) pwEl.innerHTML='<div class="row"><span>'+CP.map((_,j)=>'<span class="cp c'+j+'" style="'+(j==m.cp?'box-shadow:0 0 0 2px #fff':'')+'">'+'SMHW'[j]+'</span>').join(' ')+'</span><span class="sm">'+CP[m.cp][0]+' → '+CP[m.nx][0]+'</span></div>';
+  if(tlEl)tlEl.innerHTML='<div>ÚLTIMA VOLTA<b>'+(m.lt?fmt(m.lt):'--')+'</b></div><div>POSIÇÃO<b>P'+(ix+1)+'</b></div><div>GAP FRENTE<b>'+gf+'</b></div><div>GAP ATRÁS<b>'+gb+'</b></div>';
+  if(pwEl)pwEl.innerHTML='<div class="row"><span>'+CP.map((_,j)=>'<span class="cp c'+j+'" style="'+(j==m.cp?'box-shadow:0 0 0 2px #fff':'')+'">'+'SMHW'[j]+'</span>').join(' ')+'</span><span class="sm">'+CP[m.cp][0]+' → '+CP[m.nx][0]+'</span></div>';
   wg('ti',m.tire,0);wg('dm',m.dmg,1);if($('fu'))wg('fu',m.fuel,0);
  }
 }
@@ -415,7 +491,7 @@ function fin(){clearInterval(RC.iv);const r=RC,t=tier();r.cars.forEach(c=>{if(t.
  const base=m.dnf?-1:[0,5,3,2,1,1,1][p]||0,rep=(r.dsq?0:1)*K[s.t]*(base+(!m.dnf&&p<=s.goal?2:0))*(1+(p==1?.1*(s.up.med||0):0));
  s.bank+=Math.round(gain*(s.mm||1)*[1.25,1,.8][s.dif??1]);const mc=o.find(c=>c.d===mt.mate);if(mc&&!m.dnf&&p<o.indexOf(mc)+1){s.rep+=.5*K[s.t];s.mb=(s.mb||0)+1;if(s.hist&&s.hist.length){const c0=s.hist[s.hist.length-1];c0.mb=(c0.mb||0)+1}s.log.push(['Você terminou à frente de '+mt.mate.n+'.'])}s.bf=(s.bf||[]).filter(b=>--b.left>0);if(s.sp&&s.sp.length)s.sp=s.sp.filter(q=>{const o=SPN[q.i];if(!(o[2]&&(m.dnf||p>o[2]))){if(o[3]){const v=o[3]*SF();s.bank+=v;s.log.push(['Patrocínio '+o[0]+' pagou '+M(v)+'.'])}const f=o[4];if(f=='rep')s.rep+=.4;if(f=='mo')s.mo=cl(s.mo+4,0,100);if(f=='fa')s.fa=cl(s.fa-10,0,100);if(f=='riv'){const L2=stand().filter(w=>!w.d.me)[0];if(L2)L2.d.pts=Math.max(0,L2.d.pts-2)}if(f=='mate'&&mt.mate)mt.mate.sk=Math.max(15,mt.mate.sk-1.5)}return --q.left>0});s.ach=s.ach||[];const X={p,rain:r.rain,rally:r.rally,endu:r.endu};AC.forEach((a,i)=>{if(!s.ach.includes(i)&&a[2](X)){s.ach.push(i);s.log.push(['Conquista: '+a[0]])}});s.W.forEach(w=>{w.car=cl(w.car+RN(-.3,.9)*(w.rank<5?1.2:.8),20,98)});mt.car+=RN(0,.6)*(s.rel??50)/60*(1+.5*(s.up.eng||0));const el=o.find(c=>c.n=='Elias Vance');if(el&&!m.dnf&&!el.dnf){s.rv=s.rv||[0,0];if(o.indexOf(m)<o.indexOf(el))s.rv[0]++;else s.rv[1]++}s.gt=(s.gt||0)+1;if(!m.dnf&&p<=s.goal){s.gm=(s.gm||0)+1;s.rel=cl((s.rel??50)+4,0,100)}else s.rel=cl((s.rel??50)-(m.dnf?5:2),0,100);if(mc&&!m.dnf&&p<o.indexOf(mc)+1)s.rel=cl((s.rel??50)+2,0,100);s.mx=Math.max(s.mx||0,s.t);if(!s.free&&Math.random()<.12+.05*(s.mx-s.t))gen(1);const pole=QL&&Object.keys(QL).sort((a,b)=>QL[b]-QL[a])[0],cr=s.hist&&s.hist[s.hist.length-1];o.forEach(c=>{if(c.dnf)c.d.dn=(c.d.dn||0)+1});if(o[0]&&!o[0].dnf)o[0].d.w=(o[0].d.w||0)+1;const dd=s.W.flatMap(w=>[w.d,w.mate]),pdv=pole&&dd.find(d=>d.n==pole),fdv=r.fl&&dd.find(d=>d.n==r.fl.n);if(pdv)pdv.po=(pdv.po||0)+1;if(fdv)fdv.fl=(fdv.fl||0)+1;s.fbk=fbk();if(!s.free&&cr){cr.r++;cr.pts=mt.d.pts;if(pole==s.name)cr.po++;if(r.fl&&r.fl.n==s.name)cr.fl++;if(m.dnf)cr.dn++;else{if(p<=5)cr.t5=(cr.t5||0)+1;if(p==1){cr.w++;(s.tr=s.tr||[]).push({y:s.yr,r:trk()})}if(p<=3)cr.pod=(cr.pod||0)+1}}if(cr&&s.ms)s.ms.forEach(q=>{const m2=MS[q.i];if(!q.ok&&m2[1](cr)){q.ok=1;if(m2[2]=='$')s.bank+=px(m2[3]);else if(m2[2]=='rep')s.rep+=m2[3];else s.mo=cl(s.mo+m2[3],0,100);s.log.push(['🎯 Missão cumprida: '+m2[0]+'.'])}});chap();QL=null;s.qlv=null;s.last={tr:trk(),gain,pole,o:o.slice(0,18).map((c,i)=>({n:c.n,t:c.t,dnf:c.dnf,gap:c.tot-o[0].tot,pl:c.pl,pt:c.dnf?0:PT[i]||0,pts:c.d.pts})),fl:r.fl};s.rep=Math.max(s.rep+rep*(s.mr||1)*(rep>0?cl(1-(s.rep-t.rep)/80,.2,1):1),t.rep);s.mo=cl(s.mo+(p<=3?8:p<=s.goal?3:-5)*(s.mom||1),0,100);s.fa=cl(s.fa+10-2*(s.up.fis2||0),0,100);SK.forEach(k=>s.st[k]+=m.dnf?.05:.2);
  evt();if(Math.random()<.5)evt();s.log.push(['Corrida '+(s.rc+1)+': '+(m.dnf?'abandono':p+'º lugar')+'. Ganho: '+M(gain)+', REP +'+rep.toFixed(1)]);
- s.rc++;s.slots=slotMax();RC=null;if(s.rc>=(s.free||t.rc)){s.fimPos=pos();s.nx='perfil';s.eos=1;s.eostab=0;s.eoso=null;s.eosr=0;s.eosm='';(s.hof=s.hof||[]).push({y:s.yr,c:TNM[s.disc||'c'][s.t],p:s.fimPos,t:mt.n,pts:mt.d.pts,ch:stand()[0].d.n});if(s.fimPos==1)(s.ct=s.ct||[]).push({y:s.yr,c:TNM[s.disc||'c'][s.t],t:mt.n,pts:mt.d.pts})}else s.nx='perfil';save();if(r.dsq){V='perfil';s=null;draw();return}V='res';draw()}
+ s.rc++;s.slots=slotMax();RC=null;if(s.rc>=(s.free||t.rc)){s.fimPos=pos();s.nx='perfil';s.eos=1;s.eostab=0;s.eoso=null;s.eosr=0;s.eosm='';(s.hof=s.hof||[]).push({y:s.yr,c:TNM[s.disc||'c'][s.t],p:s.fimPos,t:mt.n,pts:mt.d.pts,ch:(stand()[0]&&stand()[0].d?stand()[0].d.n:'—')});if(s.fimPos==1)(s.ct=s.ct||[]).push({y:s.yr,c:TNM[s.disc||'c'][s.t],t:mt.n,pts:mt.d.pts})}else s.nx='perfil';save();if(r.dsq){V='perfil';s=null;draw();return}V='res';draw()}
 function offers(){const po=s.fimPos,o=[],lv=po<=3?0:po<=6?1:2,tmax=T.reduce((a,x,i)=>s.rep>=x.rep?i:a,0),fired=po>s.goal+2;
  if(!fired)o.push({t:s.t,lv,txt:'Renovar'});else o.push({t:s.t,lv:2,txt:'Equipe pequena aceita você'});
  if(!fired&&po<=3&&tmax>s.t)o.push({t:s.t+1,lv:po==1?1:2,txt:'Promoção'});
@@ -685,16 +761,53 @@ function gTestCar(carIdx){
  save(); draw();
 }
 function vGCamp(){
- const g=s.g; const pil=gPil(); const st=stand(); const myTeam=s.g.team; const l=st[0].d.pts;
- let tablePil='<table><tr><th>Pos</th><th>Piloto</th><th>Equipe</th><th>Carro</th><th>Pts</th><th>Dif</th></tr>';
- for(let i=0;i<st.length;i++){ const w=st[i]; const isC1=w.d.n== (pil[0] && pil[0].n); const isC2=w.d.n== (pil[1] && pil[1].n); tablePil+='<tr class='+(w.n==myTeam?'me':'')+'><td>'+(i+1)+'º</td><td>'+w.d.n+(isC1?' <b style=color:#facc15> C1</b>':'')+(isC2?' <b style=color:#38bdf8> C2</b>':'')+'</td><td>'+w.n+'</td><td>'+Math.round(w.car)+'</td><td><b>'+w.d.pts+'</b></td><td class="sm">'+(i?'-'+(l-w.d.pts):'Líder')+'</td></tr>'; }
- tablePil+='</table>';
- let comp='';
- if(pil.length>=2){
-  comp='<div class="card"><h3>Comparativo titulares · '+pil[0].n+' vs '+pil[1].n+'</h3><table><tr><th>Atributo</th><th>'+pil[0].n+' (C1)</th><th>'+pil[1].n+' (C2)</th></tr>';
-  for(let k=0;k<SK.length;k++){ const kk=SK[k]; comp+='<tr><td>'+NM[kk]+'</td><td>'+pil[0].at[kk]+'</td><td>'+pil[1].at[kk]+'</td></tr>'; }
-  comp+='<tr><td>Skill geral</td><td>'+pil[0].sk+'</td><td>'+pil[1].sk+'</td></tr><tr><td>Pts</td><td>'+(st.find(x=>x.d.n==pil[0].n)?.d.pts||0)+'</td><td>'+(st.find(x=>x.d.n==pil[1].n)?.d.pts||0)+'</td></tr></table></div>';
+ const g=s.g;
+ const pil=gPil();
+ const st=stand();
+ if(!st||!st.length){$('v').innerHTML='<div class="card"><p class="sm">Campeonato sem dados ainda.</p></div>';return;}
+ const myTeam=s.g.team;
+ const l=(st[0]&&st[0].d&&st[0].d.pts)||0;
+
+ /* ── Tabela classificação ── */
+ let tablePil='<div style="overflow-x:auto"><table><tr><th>Pos</th><th>Piloto</th><th>Equipe</th><th>Carro</th><th>Pts</th><th>Dif</th></tr>';
+ for(let i=0;i<st.length;i++){
+  const w=st[i];
+  if(!w||!w.d)continue;
+  const pts=w.d.pts||0;
+  const isC1=pil[0]&&w.d.n==pil[0].n;
+  const isC2=pil[1]&&w.d.n==pil[1].n;
+  const badge=isC1?' <b style="color:#facc15">C1</b>':isC2?' <b style="color:#38bdf8">C2</b>':'';
+  tablePil+='<tr class="'+(w.n==myTeam?'me':'')+'"><td>'+(i+1)+'º</td><td>'+w.d.n+badge+'</td><td>'+w.n+'</td><td>'+Math.round(w.car||0)+'</td><td><b>'+pts+'</b></td><td class="sm">'+(i?'−'+(l-pts):'Líder')+'</td></tr>';
  }
+ tablePil+='</table></div>';
+
+ /* ── Comparativo titulares: maior em vermelho ── */
+ let comp='';
+ const p0=pil[0],p1=pil[1];
+ if(p0&&p1&&p0.n&&p1.n){
+  const RED='#ef4444';
+  function cmpTd(a,b){
+   const ca=a>b?RED:'inherit',cb=b>a?RED:'inherit';
+   return['<td style="color:'+ca+';font-weight:'+(a>b?700:400)+'">'+a+'</td>','<td style="color:'+cb+';font-weight:'+(b>a?700:400)+'">'+b+'</td>'];
+  }
+  const pts0=(st.find(x=>x.d&&x.d.n==p0.n)||{d:{pts:0}}).d.pts||0;
+  const pts1=(st.find(x=>x.d&&x.d.n==p1.n)||{d:{pts:0}}).d.pts||0;
+  comp='<div class="card"><h3>Comparativo titulares</h3><table>'
+   +'<tr><th>Atributo</th><th style="color:#facc15">'+p0.n+' <span class="chip">C1</span></th><th style="color:#38bdf8">'+p1.n+' <span class="chip">C2</span></th></tr>';
+  for(let k=0;k<SK.length;k++){
+   const kk=SK[k];
+   const v0=(p0.at&&p0.at[kk]!=null)?p0.at[kk]:(p0.sk||0);
+   const v1=(p1.at&&p1.at[kk]!=null)?p1.at[kk]:(p1.sk||0);
+   const [td0,td1]=cmpTd(v0,v1);
+   comp+='<tr><td>'+NM[kk]+'</td>'+td0+td1+'</tr>';
+  }
+  const [skTd0,skTd1]=cmpTd(p0.sk||0,p1.sk||0);
+  const [ptTd0,ptTd1]=cmpTd(pts0,pts1);
+  comp+='<tr><td>Skill geral</td>'+skTd0+skTd1+'</tr>'
+   +'<tr><td>Pontos</td>'+ptTd0+ptTd1+'</tr>'
+   +'</table></div>';
+ }
+
  $('v').innerHTML='<div class="card"><h3>'+tier().n+' · Etapa '+s.rc+'/'+tier().rc+'</h3>'+tablePil+'</div>'+comp;
 }
 function NAV(){return isG()?[['central','Central'],['cal','Calendário'],['equipe','Equipe'],['fac','Instalações'],['eng','Engenharia'],['carro','Carro'],['camp','Campeonato'],['spn','Patrocínios'],['fin','Finanças'],['gperfil','Perfil'],['carr','Histórico']]:[['perfil','Perfil'],['semana','Semana'],['loja','Loja'],['camp','Campeonato'],['carr','Carreira'],['carro','Carro'],['neg','Negócios']]}
