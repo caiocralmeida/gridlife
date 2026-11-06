@@ -929,7 +929,7 @@ function vGCamp(){
 
  $('v').innerHTML='<div class="card"><h3>'+tier().n+' · Etapa '+s.rc+'/'+tier().rc+'</h3>'+tablePil+'</div>'+comp;
 }
-function NAV(){return isG()?[['central','Central'],['equipe','Equipe'],['fac','Instalações'],['eng','Engenharia'],['carro','Carro'],['camp','campeq','Campeonato'],['spn','Patrocínios'],['fin','Finanças'],['gperfil','Perfil']]:[['perfil','Perfil'],['semana','Semana'],['loja','Loja'],['camp','Campeonato'],['carr','Carreira'],['carro','Carro'],['neg','Negócios']]}
+function NAV(){return isG()?[['central','Central'],['equipe','Equipe'],['fac','Instalações'],['eng','Engenharia'],['carro','Carro'],['camp','Campeonato']['campeq','Equipe'],['spn','Patrocínios'],['fin','Finanças'],['gperfil','Perfil']]:[['perfil','Perfil'],['semana','Semana'],['loja','Loja'],['camp','Campeonato'],['carr','Carreira'],['carro','Carro'],['neg','Negócios']]}
 function vGPH(){vGP();const a=$('v').innerHTML;vCarr();$('v').innerHTML=a+$('v').innerHTML}
 function VIEWS(){return isG()?{central:vGC,cal:vGCal,equipe:vGE,fac:vGF,eng:vGEn,carro:vGCarro,camp:vGCalCamp,campeq:vGCampEq,spn:vGS,fin:vGFi,gperfil:vGPH,carr:vGPH,res:vRes}:{perfil:vPerfil,semana:vSemana,loja:vLoja,camp:vCamp,carr:vCarr,carro:vCarro,neg:vNeg,fim:vFim,res:vRes}}
 const topInfo=()=>isG()?'Dia '+s.g.d+' · Saldo <b style="color:var(--g)">'+M(s.bank)+'</b> · REP <b>'+s.rep.toFixed(1)+'</b>':'Saldo <b style="color:var(--g)">'+M(s.bank)+'</b> · REP <b>'+s.rep.toFixed(1)+'</b>';
