@@ -1058,10 +1058,10 @@ function vGCampEq(){
  const g=s.g;
  const rows=s.W.map(w=>({team:w.n,pts:(w.d.pts||0)+(w.mate?(w.mate.pts||0):0),pil:[w.d,w.mate].filter(Boolean)})).sort((a,b)=>b.pts-a.pts);
  const body=rows.map((r,i)=>'<tr class="'+(r.team==g.team?'me gp-me':'')+'"><td>'+(i+1)+'</td><td><b>'+r.team+'</b></td><td>'+r.pil.map(p=>p.n).join(' · ')+'</td><td><b>'+r.pts+'</b></td></tr>').join('');
- $('v').innerHTML='<div class="card eq-title"><h3>Campeonato de equipes</h3><p class="sm">Soma dos pontos dos dois pilotos de cada equipe.</p></div><div class="card"><table><tr><th>Pos</th><th>Equipe</th><th>Pilotos</th><th>Pts</th></tr>'+body+'</table></div>';
+ $('v').innerHTML='<div class="card eq-title"><h3>Equipes</h3><p class="sm">Soma dos pontos dos dois pilotos de cada equipe.</p></div><div class="card"><table><tr><th>Pos</th><th>Equipe</th><th>Pilotos</th><th>Pts</th></tr>'+body+'</table></div>';
 }
 
-/* ===== v8: classificação da corrida (gestor) com aba "Campeonato equipes" ao vivo ===== */
+/* ===== v8: classificação da corrida (gestor) com aba "Equipes" ao vivo ===== */
 function rankPop(tab){
  const r=RC; if(!r)return;
  const o=r.ord||[], l=r.l0||0;
@@ -1085,7 +1085,7 @@ function rankPop(tab){
   b=`<table><tr><th>Pos</th><th>Equipe</th><th>Pilotos</th><th>Pts atuais</th><th>Ao vivo</th><th>Total projetado</th></tr>${teams.map((t,i)=>`<tr class="${G&&t.team==s.g.team?'me':''}"><td>${i+1}</td><td><b>${t.team}</b></td><td class="sm">${t.pil.map(p=>p.n).join(' · ')}</td><td>${t.pts}</td><td style="color:var(--g)">+${t.lv}</td><td><b>${t.tot}</b></td></tr>`).join('')}</table>`;
  }
  const btns = G
-  ? `<button class="b ${tab==0||!tab?'':'s'}" onclick="rankPop(0)">Corrida ao vivo</button><button class="b ${tab==1?'':'s'}" onclick="rankPop(1)">Campeonato</button><button class="b ${tab==2?'':'s'}" onclick="rankPop(2)">Campeonato equipes</button>`
+  ? `<button class="b ${tab==0||!tab?'':'s'}" onclick="rankPop(0)">Corrida ao vivo</button><button class="b ${tab==1?'':'s'}" onclick="rankPop(1)">Campeonato</button><button class="b ${tab==2?'':'s'}" onclick="rankPop(2)">Equipes</button>`
   : `<button class="b ${tab?'s':''}" onclick="rankPop(0)">Corrida ao vivo</button><button class="b ${tab?'':'s'}" onclick="rankPop(1)">Campeonato</button>`;
  pop(`<div class="row"><h3>Classificação</h3><button class="b s" onclick="rankX()">Fechar</button></div><div class="pre" style="margin:8px 0">${btns}</div><div>${b}</div>`);
 }
